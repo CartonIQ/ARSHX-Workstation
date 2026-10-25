@@ -1,0 +1,49 @@
+import React, { useState } from 'react';
+import { Terminal as TerminalIcon, FlaskConical } from 'lucide-react';
+import { Project } from '../../types';
+import { SmartTerminal } from './SmartTerminal';
+import { NativeShell } from './NativeShell';
+import { isNativeShellAvailable } from '../../utils/nativeShell';
+
+interface Props {
+  activeProject: Project;
+  onUpdateProject: (updated: Project) => void;
+  onAskAi: (prompt: string) => Promise<string>;
+}
+
+/** Real native shell inside the Android app; simulated terminal everywhere else. */
+export const TerminalHub: React.FC<Props> = (props) => {
+  const native = isNativeShellAvailable();
+  const [mode, setMode] = useState<'native' | 'sim'>(native ? 'native' : 'sim');
+
+  return (
+    <div className="flex-1 flex flex-col min-h-0 min-w-0">
+      <div className="flex items-center gap-1 px-2 py-1.5 shrink-0 border-b border-[#24242C]">
+        <div role="tablist" aria-label="Terminal type" className="flex rounded-xl bg-black/30 border border-white/10 p-0.5">
+          <button
+            role="tab"
+            aria-selected={mode === 'native'}
+            disabled={!native}
+            onClick={() => setMode('native')}
+            className={`px-3 min-h-[36px] rounded-lg text-xs font-bold flex items-center gap-1.5 disabled:opacity-40 ${mode === 'native' ? 'bg-[#E5222A] text-white' : 'text-[#B4B4C2]'}`}
+          ><TerminalIcon className="w-3.5 h-3.5" /> Native shell</button>
+          <button
+            role="tab"
+            aria-selected={mode === 'sim'}
+            onClick={() => setMode('sim')}
+            className={`px-3 min-h-[36px] rounded-lg text-xs font-bold flex items-center gap-1.5 ${mode === 'sim' ? 'bg-[#E5222A] text-white' : 'text-[#B4B4C2]'}`}
+          ><FlaskConical className="w-3.5 h-3.5" /> Simulated</button>
+        </div>
+        {!native && <span className="text-[11px] text-[#9494A6] ml-2">Native shell runs in the Android app.</span>}
+      </div>
+      {native && (
+        <div className={mode === 'native' ? 'flex-1 flex flex-col min-h-0' : 'hidden'}>
+          <NativeShell {...props} />
+        </div>
+      )}
+      <div className={mode === 'sim' ? 'flex-1 flex flex-col min-h-0' : 'hidden'}>
+        <SmartTerminal {...props} />
+      </div>
+    </div>
+  );
+};

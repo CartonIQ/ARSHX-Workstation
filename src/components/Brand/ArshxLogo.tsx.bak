@@ -1,0 +1,92 @@
+import React, { useId } from 'react';
+
+interface ArshxLogoProps {
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  showWordmark?: boolean;
+  showTagline?: boolean;
+  className?: string;
+  animated?: boolean;
+}
+
+/**
+ * ARSHX "Prompt A" mark: the letter A drawn as an upward chevron with a
+ * terminal cursor as its crossbar, on a frosted-glass tile.
+ * Keep in sync with assets/ (icons are rendered from the same geometry).
+ */
+export const ArshxMark: React.FC<{ px?: number; tile?: boolean }> = ({ px = 40, tile = true }) => {
+  const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
+  return (
+    <svg width={px} height={px} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id={`red${uid}`} x1="20%" y1="0%" x2="80%" y2="100%">
+          <stop offset="0" stopColor="#FF6A70" />
+          <stop offset=".55" stopColor="#E5222A" />
+          <stop offset="1" stopColor="#B8161D" />
+        </linearGradient>
+        <linearGradient id={`tile${uid}`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0" stopColor="#2A2A38" />
+          <stop offset="1" stopColor="#0F0F15" />
+        </linearGradient>
+        <linearGradient id={`gloss${uid}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#fff" stopOpacity=".20" />
+          <stop offset="1" stopColor="#fff" stopOpacity="0" />
+        </linearGradient>
+        <clipPath id={`clip${uid}`}><rect x="4" y="4" width="92" height="92" rx="26" /></clipPath>
+      </defs>
+      {tile && (
+        <>
+          <rect x="4" y="4" width="92" height="92" rx="26" fill={`url(#tile${uid})`} />
+          <rect x="4.75" y="4.75" width="90.5" height="90.5" rx="25.25" stroke="#fff" strokeOpacity=".16" strokeWidth="1.5" />
+          <rect x="4" y="4" width="92" height="46" fill={`url(#gloss${uid})`} clipPath={`url(#clip${uid})`} />
+        </>
+      )}
+      <path d="M25 75 L50 24 L75 75" stroke={`url(#red${uid})`} strokeWidth="12" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M31 71 L50 32" stroke="#fff" strokeOpacity=".28" strokeWidth="2.5" strokeLinecap="round" />
+      <rect x="39" y="60" width="22" height="8" rx="4" fill="#fff" />
+    </svg>
+  );
+};
+
+export const ArshxLogo: React.FC<ArshxLogoProps> = ({
+  size = 'md',
+  showWordmark = false,
+  showTagline = false,
+  className = '',
+  animated = false,
+}) => {
+  const sizeMap = {
+    xs: { px: 24, font: 'text-xs', tag: 'text-[7px]' },
+    sm: { px: 32, font: 'text-sm', tag: 'text-[8px]' },
+    md: { px: 40, font: 'text-base', tag: 'text-[9px]' },
+    lg: { px: 64, font: 'text-2xl', tag: 'text-[11px]' },
+    xl: { px: 96, font: 'text-4xl', tag: 'text-sm' },
+  };
+  const s = sizeMap[size];
+
+  return (
+    <div className={`flex items-center gap-3 select-none ${className}`}>
+      <div
+        className={`relative shrink-0 ${animated ? 'transition-transform duration-300 hover:scale-105' : ''}`}
+        style={{ width: s.px, height: s.px, filter: 'drop-shadow(0 4px 14px rgba(229,34,42,0.35))' }}
+      >
+        <ArshxMark px={s.px} />
+      </div>
+
+      {(showWordmark || showTagline) && (
+        <div className="flex flex-col">
+          {showWordmark && (
+            <div className="flex items-center gap-1.5 leading-none">
+              <span className={`font-black tracking-[0.2em] text-[#F7F7FA] ${s.font}`}>ARSHX</span>
+              <span className="w-1.5 h-4 rounded-sm bg-[#E5222A] terminal-cursor" />
+            </div>
+          )}
+          {showTagline && (
+            <span className={`font-bold text-[#FF4D55] tracking-[0.25em] mt-1 uppercase leading-none ${s.tag}`}>
+              BUILD. CREATE. RISE.
+            </span>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};

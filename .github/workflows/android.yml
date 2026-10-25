@@ -1,0 +1,51 @@
+name: Android build
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: 21 }
+      - uses: android-actions/setup-android@v3
+
+      - name: Install, typecheck and generate Android project
+        run: |
+          npm install
+          npm run typecheck
+          bash scripts/setup-android.sh
+
+      - name: Restore release keystore (optional)
+        env:
+          KEYSTORE_B64: ${{ secrets.ARSHX_KEYSTORE_BASE64 }}
+          STORE_PASSWORD: ${{ secrets.ARSHX_STORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ARSHX_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ARSHX_KEY_PASSWORD }}
+        run: |
+          if [ -n "$KEYSTORE_B64" ]; then
+            echo "$KEYSTORE_B64" | base64 -d > android/arshx-release.jks
+            printf 'storeFile=arshx-release.jks\nstorePassword=%s\nkeyAlias=%s\nkeyPassword=%s\n' \
+              "$STORE_PASSWORD" "$KEY_ALIAS" "$KEY_PASSWORD" > android/keystore.properties
+          else
+            echo "No keystore secret set: building debug APK only"
+          fi
+
+      - name: Build
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          if [ -f keystore.properties ]; then ./gradlew bundleRelease assembleRelease; else ./gradlew assembleDebug; fi
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: arshx-android
+          path: |
+            android/app/build/outputs/apk/**/*.apk
+            android/app/build/outputs/bundle/**/*.aab

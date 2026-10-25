@@ -1,0 +1,227 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   ARSHX Glass Design System
+   Tokens -> surfaces -> components -> legacy-color theming -> a11y/perf.
+   ========================================================================== */
+
+@layer base {
+  :root {
+    --font-sans: 'Plus Jakarta Sans Variable', 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+    /* Brand */
+    --arshx-red: #E5222A;
+    --arshx-red-hi: #FF4D55;
+    --arshx-red-lo: #B8161D;
+    --ink: #F7F7FA;
+    --ink-dim: #B4B4C2;
+    --ink-mute: #9494A6;
+
+    /* Glass */
+    --glass-fill: rgba(30, 30, 42, 0.58);
+    --glass-fill-strong: rgba(22, 22, 32, 0.78);
+    --glass-edge: rgba(255, 255, 255, 0.10);
+    --glass-edge-hi: rgba(255, 255, 255, 0.20);
+    --glass-blur: 18px;
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+
+    /* Safe areas (edge-to-edge on Android 15) */
+    --sat: env(safe-area-inset-top, 0px);
+    --sab: env(safe-area-inset-bottom, 0px);
+    --sal: env(safe-area-inset-left, 0px);
+    --sar: env(safe-area-inset-right, 0px);
+    --bottom-nav-h: 4rem;
+  }
+
+  html, body, #root { height: 100%; }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #0B0B10;
+    color: var(--ink);
+    overscroll-behavior: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Ambient aurora behind every screen (single fixed layer, no per-element cost) */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(60rem 40rem at 12% -10%, rgba(229, 34, 42, 0.20), transparent 60%),
+      radial-gradient(50rem 40rem at 105% 15%, rgba(88, 80, 236, 0.16), transparent 60%),
+      radial-gradient(45rem 35rem at 40% 115%, rgba(20, 184, 166, 0.10), transparent 60%),
+      linear-gradient(180deg, #0F0F15 0%, #0B0B10 100%);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--arshx-red-hi);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  button, [role="button"], select, input[type="checkbox"], label { touch-action: manipulation; }
+}
+
+/* ---------- Scrollbars ---------- */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.14); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.24); }
+
+/* ---------- Components ---------- */
+.glass-panel {
+  background: var(--glass-fill-strong);
+  border: 1px solid var(--glass-edge);
+  box-shadow: var(--glass-shadow);
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) + 6px)) saturate(150%);
+  backdrop-filter: blur(calc(var(--glass-blur) + 6px)) saturate(150%);
+}
+
+.glass-card {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+  border: 1px solid var(--glass-edge);
+  border-radius: 1rem;
+  box-shadow: var(--glass-shadow);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+}
+
+.glass-input {
+  background: rgba(0, 0, 0, 0.30);
+  border: 1px solid var(--glass-edge);
+  border-radius: 0.75rem;
+  padding: 0.6rem 0.8rem;
+  min-height: 44px;
+  color: var(--ink);
+  font-size: 0.8rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.glass-input:focus {
+  outline: none;
+  border-color: var(--arshx-red-hi);
+  box-shadow: 0 0 0 3px rgba(229, 34, 42, 0.25);
+}
+
+.btn-primary, .btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  padding: 0 1rem;
+  border-radius: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: transform 0.12s ease, filter 0.15s ease, background-color 0.15s ease;
+}
+.btn-primary {
+  color: #fff;
+  background-image: linear-gradient(135deg, var(--arshx-red-hi), var(--arshx-red-lo));
+  box-shadow: 0 6px 20px rgba(229, 34, 42, 0.30), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+.btn-ghost {
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--glass-edge);
+}
+.btn-primary:hover, .btn-ghost:hover { filter: brightness(1.12); }
+.btn-primary:active, .btn-ghost:active { transform: scale(0.97); }
+.btn-primary:disabled, .btn-ghost:disabled { opacity: 0.45; cursor: not-allowed; filter: none; transform: none; }
+
+/* ---------- App shell ---------- */
+.app-header {
+  padding-top: var(--sat);
+  padding-left: calc(0.75rem + var(--sal));
+  padding-right: calc(0.75rem + var(--sar));
+  height: calc(3.5rem + var(--sat)) !important;
+}
+.app-content-pad { padding-bottom: calc(var(--bottom-nav-h) + var(--sab) + 0.5rem); }
+@media (min-width: 1024px) { .app-content-pad { padding-bottom: 0; } }
+
+.bottom-dock {
+  padding-bottom: var(--sab);
+  padding-left: var(--sal);
+  padding-right: var(--sar);
+  height: calc(var(--bottom-nav-h) + var(--sab));
+}
+
+/* ---------- Theming for existing components ----------
+   Existing screens use fixed hex utility classes. Re-skinning them centrally
+   keeps every screen on one design system without touching 9k lines of markup.
+   Unlayered rules intentionally win over Tailwind's utility layer. */
+
+/* Page / canvas surfaces: translucent so the aurora shows through */
+[class~="bg-[#111114]"], [class~="bg-[#0E0E12]"] { background-color: rgba(12, 12, 17, 0.62) !important; }
+[class~="bg-[#070709]"] { background-color: #06060A !important; }
+
+/* Raised surfaces -> frosted glass */
+[class~="bg-[#141418]"], [class~="bg-[#151519]"], [class~="bg-[#16161C]"], [class~="bg-[#121216]"] {
+  background-color: rgba(24, 24, 34, 0.60) !important;
+}
+[class~="bg-[#181820]"], [class~="bg-[#1A1A20]"], [class~="bg-[#1A1A22]"], [class~="bg-[#1F1F27]"] {
+  background-color: rgba(34, 34, 48, 0.55) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  backdrop-filter: blur(14px) saturate(130%);
+}
+[class~="bg-[#24242C]"], [class~="bg-[#252530]"], [class~="bg-[#2A2A35]"], [class~="bg-[#1C1C24]"] {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Hairline borders */
+[class~="border-[#24242C]"], [class~="border-[#262633]"], [class~="border-[#24242E]"],
+[class~="border-[#272733]"], [class~="border-[#2B2B38]"], [class~="border-[#2C2C38]"],
+[class~="border-[#2E2E38]"], [class~="border-[#34343E]"], [class~="border-[#2E2E3C]"] {
+  border-color: var(--glass-edge) !important;
+}
+
+/* Primary red fills get depth */
+[class~="bg-[#E5222A]"] {
+  background-image: linear-gradient(135deg, var(--arshx-red-hi), var(--arshx-red-lo));
+}
+[class~="hover:bg-[#d01c24]"]:hover { filter: brightness(1.1); }
+
+/* Contrast: lift the two dimmest greys to meet WCAG AA on dark glass */
+[class~="text-[#555566]"] { color: #8E8EA0 !important; }
+[class~="text-[#85858F]"] { color: var(--ink-mute) !important; }
+[class~="text-[#A5A5B2]"] { color: var(--ink-dim) !important; }
+
+/* Rounder, more modern cards */
+[class~="rounded-xl"] { border-radius: 0.9rem; }
+[class~="rounded-2xl"] { border-radius: 1.15rem; }
+
+/* ---------- Motion ---------- */
+@keyframes terminalCursor { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+.terminal-cursor { animation: terminalCursor 1s step-end infinite; }
+
+@keyframes glassIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.985); }
+  to { opacity: 1; transform: none; }
+}
+.glass-enter { animation: glassIn 0.22s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Low-end devices / users who prefer less transparency: drop blur, keep contrast */
+@media (prefers-reduced-transparency: reduce) {
+  * { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+  .glass-panel, .glass-card { background: #1B1B26; }
+}
+
+/* Keep hover feedback on re-skinned buttons (their fill is forced above) */
+button[class~="bg-[#24242C]"]:hover, button[class~="bg-[#252530]"]:hover,
+button[class~="bg-[#2A2A35]"]:hover, button[class~="bg-[#1C1C24]"]:hover,
+label[class~="bg-[#24242C]"]:hover {
+  background-color: rgba(255, 255, 255, 0.14) !important;
+}

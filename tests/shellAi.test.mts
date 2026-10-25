@@ -1,0 +1,14 @@
+import { extractCommand, isRiskyCommand } from '../src/utils/shellAi.ts';
+let pass=0, fail=0; const t=(n:string,c:boolean)=>{c?pass++:fail++;console.log((c?'PASS ':'FAIL ')+n)};
+t('plain command', extractCommand('ls -la')==='ls -la');
+t('fenced block', extractCommand('Sure:\n```sh\nfind . -name "*.kt"\n```\nDone')==='find . -name "*.kt"');
+t('strips $ prompt', extractCommand('$ pwd')==='pwd');
+t('skips comments', extractCommand('# list\nls')==='ls');
+t('empty -> empty', extractCommand('')==='');
+t('rm -rf / risky', isRiskyCommand('rm -rf /'));
+t('rm -rf ~ risky', isRiskyCommand('rm -rf ~'));
+t('rm -rf * risky', isRiskyCommand('rm -rf *'));
+t('rm file not risky', !isRiskyCommand('rm old.txt'));
+t('ls not risky', !isRiskyCommand('ls -la'));
+t('dd risky', isRiskyCommand('dd if=/dev/zero of=x'));
+console.log(`\n${pass} passed, ${fail} failed`); process.exit(fail?1:0);
