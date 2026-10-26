@@ -35,7 +35,7 @@ android {
         release {
             minifyEnabled true
             shrinkResources true
-            if (keystorePropsFile.exists()) { signingConfig signingConfigs.release }
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

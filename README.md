@@ -1,27 +1,38 @@
-# ARSHX Developer Workstation
+# 🐧 ARSHX Workstation
 
-Mobile-first coding workstation: multi-file editor, sandboxed terminal, live preview, Project Doctor,
-Time Machine checkpoints, Web/Game studios, and Gemini-powered AI tools. React 19 + Tailwind 4,
-packaged for Android with Capacitor (`com.arshx.workstation`).
+**ARSHX** is a complete, professional developer workstation built for Android. Code, test, and build Web, Android, and AI projects directly on your phone — no PC required.
 
-## Develop
-```bash
-npm install
-npm run dev          # http://localhost:5173
-npm run typecheck
-npm run build
-```
+<!-- Add your screenshot here later -->
+<!-- ![ARSHX Banner](link-to-your-image.png) -->
 
-## AI features (bring your own key)
-There is no backend. Open **Settings > AI (Gemini)**, paste a key from <https://aistudio.google.com/apikey>,
-and tap *Verify & Save*. The key lives only in the app's private storage and is sent only to
-`generativelanguage.googleapis.com`. Without a key the editor, terminal, preview and all other tools still work.
+## ✨ Features
 
-## Android
-```bash
-npm run android:setup     # once: generates android/, icons, hardening, versioning
-npm run android:debug     # debug APK -> android/app/build/outputs/apk/debug/
-npm run android:release   # signed AAB/APK (needs android/keystore.properties)
-```
-Requires Node 20+, JDK 21 (or 17), Android SDK platform 35. No local toolchain? Run the
-**Android build** GitHub workflow (Actions tab). See `docs/RELEASE.md` for signing and Play steps.
+- 💻 **Pro Code Editor:** Syntax highlighting, auto-save, and quick-typing symbol bar.
+- 🖥️ **Native Terminal Shell:** Run real shell commands directly on your device.
+- 🤖 **AI Creator:** Built-in AI engineering tools to help you write and fix code.
+- 🚀 **Web Studio:** Build and preview web apps instantly.
+- 🩺 **Project Doctor:** Automatically find and fix broken project files.
+- 📦 **Export/Import ZIP:** Backup and share entire projects with one tap.
+- 🎨 **Premium Dark UI:** High-contrast, red-accented theme designed for long coding sessions.
+- 🔒 **100% Offline:** Your code and projects stay on your device.
+
+## 🚀 Installation
+
+1. Go to the **[Releases](https://github.com/CartonIQ/ARSHX-Workstation/releases)** page.
+2. Download the latest `ARSHX-Signed.apk`.
+3. Open and install (allow "Install from unknown sources" if prompted).
+
+## 🛠️ Built With
+
+- **Framework:** React + Capacitor
+- **Language:** TypeScript / Kotlin (Native Bridge)
+- **UI:** Tailwind CSS
+- **Terminal:** Custom Native Android Shell
+- **Monetization:** Google AdMob (Rewarded Ads for supporting development)
+
+## ⚖️ License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👨‍💻 Developer
+**CartonIQ**
+- GitHub: [@CartonIQ](https://github.com/CartonIQ)
