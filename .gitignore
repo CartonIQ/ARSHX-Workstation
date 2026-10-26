@@ -1,4 +1,4 @@
-# Node Modules (Massive - do not upload)
+# Dependencies
 node_modules/
 npm-debug.log
 yarn-error.log
@@ -9,23 +9,29 @@ android/build/
 dist/
 build/
 .capacitor/
-
-# Android & Gradle
 .gradle/
 local.properties
-*.apk
-*.aab
+
+# Backups and temp files
+backups/
+*.bak
+*.before-real-admob
+*.academy-backup
+*.admob-backup
+__pycache__/
+*.pyc
+*.log
+
+# Secrets
+.env
+.env.local
 *.keystore
 *.jks
 keystore.properties
 
-# Environment
-.env
-.env.local
+# Android APKs
+*.apk
+*.aab
 
 # OS X
 .DS_Store
-
-# Backups
-*.bak
-*.before-real-admob
